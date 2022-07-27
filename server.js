@@ -21,23 +21,23 @@ const io = new Server(server, {
 //skapa en middleware
 //hejsan
 
-const rooms = {
-  default: {
-    name: "Default room",
-    state: [],
-  },
-};
+// const rooms = {
+//   default: {
+//     name: "Default room",
+//     state: [],
+//   },
+// };
 
-const username = {
-  default: {
-    name: "Default user",
-    state: [],
-  },
-};
+// const username = {
+//   default: {
+//     name: "Default user",
+//     state: [],
+//   },
+// };
 
 // socket connection / anslutning.
 io.on("connection", async (socket) => {
-  console.log(`Användare med id: ${socket.id} har anslutit`);
+  //   console.log(`Användare med id: ${socket.id} har anslutit`);
 
   //hämta alla rum i consolen
   const createdRooms = await roomsModel.getRooms();
@@ -49,76 +49,71 @@ io.on("connection", async (socket) => {
       return e.name === room;
     });
     if (checkRoom.length) {
-      return console.log("Rummet finns redan");
+      return console.log("Room already exist, choose another name");
     } else {
       const newRoom = await roomsModel.addRoom(room);
       socket.emit("room_created", room);
-      console.log(`Nytt rum är skapat vid namn: ${room}`);
     }
   });
 
   // gå med i rum
-  socket.on("join_room", async ({ room, username }) => {
+  socket.on("join_room", async (room) => {
     socket.join(room);
     socket.emit("joined_room", room);
-
-    //Room = Undefined
-
-    // const rooms = await roomsModel.getRooms();
-    // if (rooms.filter((e) => e.name === room).length > 0) {
-    //   socket.join(room);
-    // }
-    // console.log(`Användare ${socket.id} har gått med i rum: ${room}`);
-    // io.to(room).emit("joined_room", socket.id, room);
+    const messages = await messagesModel.getRoomMessages(room);
+    socket.emit("admin_msg", [messages, room]);
   });
 
   // lämna rum
-  socket.on("leave_room", (data) => {
-    console.log(`User: ${socket.id} har lämnat rum: ${data}`);
-    socket.leave(data);
-    // console.log(data);
+  socket.on("leave_room", (room) => {
+    socket.leave(room);
   });
 
   // skapa nya user
-  socket.on("create_user", async (data) => {
+  socket.on("create_user", async (username) => {
     const users = await usersModel.getUsers();
-    const checkUser = users.filter((user) => {
-      return user.username === newUsername;
+    const checkUser = await users.filter((user) => {
+      return user.username === username;
     });
 
     if (checkUser.length !== 0) {
       console.log("User already exist");
       return;
     }
-    usersModel.addUser(socket.id, newUsername);
+
+    usersModel.addUser(socket.id, username);
     io.emit("get_users", users);
 
     socket.emit("user_created", {
       user_id: socket.id,
-      username: newUsername,
+      username: username,
     });
   });
 
-  socket.on("send_message", async (data) => {
+  socket.on("message", async (data) => {
     // if (!data.message.lenght) {
     //   return console.log("empty message");
     // }
-    console.log(data);
 
     const newMessage = {
-      message: data.message, //blir tomma object
+      message: data.message,
       id_room: data.room,
-      id_user: data.user_id,
+      id_user: socket.id,
       username: data.username,
       date: moment().format("HH:mm"),
     };
-    console.log(data, "hej från data, send message");
     messagesModel.addMessage(newMessage);
+    // const roomMessages = await messagesModel.getRoomMessages(data);
 
-    const roomMessages = await messagesModel.getRoomMessages(data);
-    io.to(data.room).emit("sent_message", roomMessages);
-    console.log(data.room);
-    console.log(roomMessages, "denna skickar med all data");
+    socket.to(data.room).emit("sent_message", newMessage);
+    console.log(newMessage, "denna skickar med all data");
+  });
+
+  socket.on("delete_room", async (room) => {
+    await messagesModel.deleteMessages(room);
+    await roomsModel.deleteRoom(room);
+    const createdRooms = await roomsModel.getRooms();
+    io.emit("deleted_room", createdRooms);
   });
 
   // socket.io | disconnect / avbryter.
