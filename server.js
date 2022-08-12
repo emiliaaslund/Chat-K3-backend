@@ -22,6 +22,7 @@ const io = new Server(server, {
 
 // socket connection / anslutning.
 io.on("connection", async (socket) => {
+  console.log(socket.rooms, "socket.rooms");
   // console.log(`Användare med id: ${socket.id} har anslutit`);
 
   socket.use(([event, ...args], next) => {
@@ -63,9 +64,10 @@ io.on("connection", async (socket) => {
   // gå med i rum
   socket.on("join_room", async (room) => {
     socket.join(room);
-
+    socket.emit("joined_room", room);
     const messages = await messagesModel.getRoomMessages(room);
-    io.to(room).emit("joined_room", messages, socket.id);
+    // io.to(room).emit("joined_room", room, username);
+    console.log(room, "se vad som skickas över till front");
   });
 
   // lämna rum
@@ -109,8 +111,11 @@ io.on("connection", async (socket) => {
       };
 
       messagesModel.addMessage(newMessage);
-      socket.to(data.room).emit("sent_message", newMessage);
-      console.log(newMessage, "denna skickar med all data");
+      io.to(data.room).emit("sent_message", {
+        message: data.message,
+        username: data.username,
+      });
+      // console.log(newMessage, "denna skickar med all data");
     }
   });
 
