@@ -111,7 +111,7 @@ io.on("connection", async (socket) => {
       };
 
       messagesModel.addMessage(newMessage);
-      io.to(data.room).emit("sent_message", {
+      socket.to(data.room).emit("sent_message", {
         message: data.message,
         username: data.username,
       });
