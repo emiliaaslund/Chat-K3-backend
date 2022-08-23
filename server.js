@@ -1,11 +1,10 @@
 const express = require("express");
 const app = express();
-const port = 4000;
+const port = process.env.PORT || 4000;
 const http = require("http");
 const { Server } = require("socket.io");
 const server = http.createServer(app);
 const moment = require("moment");
-
 const fs = require("fs");
 
 //Models
