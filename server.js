@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const port = process.env.PORT || 4000;
+const port = process.env.PORT;
 const http = require("http");
 const { Server } = require("socket.io");
 const server = http.createServer(app);
@@ -15,7 +15,8 @@ const messagesModel = require("./models/messages.model");
 const io = new Server(server, {
   cors: {
     origin: "*",
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "OPTIONS"],
+    headers: "Content-Type",
   },
 });
 
@@ -131,5 +132,6 @@ io.on("connection", async (socket) => {
   });
 });
 
-io.listen(4000);
-console.log(`Servern körs på port ${port}`);
+server.listen(port, () => {
+  console.log(`Listening on ${port}`);
+});
