@@ -12,18 +12,9 @@ const usersModel = require("./models/users.model");
 const roomsModel = require("./models/rooms.model");
 const messagesModel = require("./models/messages.model");
 
-// får No 'Access-Control-Allow-Origin' och ERR_FAILED_503 när jag joinar ett rum.
-// NEJ NU FÅR JAG ERROR 200 och fortfarande CORS fel gaahahhh.
-
 const io = new Server(server, {
   cors: {
     origin: "*",
-    // origin: [
-    //   "*",
-    //   // "https://localhost:3000/",
-    //   // "http://127.0.0.1:5173/",
-    //   // "https://realtimechat-client.herokuapp.com/",
-    // ],
     methods: ["GET", "POST", "OPTIONS"],
     credentials: true,
     headers: "Content-Type",
