@@ -15,5 +15,15 @@
   },
   "author": "",
   "license": "ISC",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emiliaaslund/Chat-K3-backend.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/emiliaaslund/Chat-K3-backend/issues"
+  },
+  "homepage": "https://github.com/emiliaaslund/Chat-K3-backend#readme",
   "description": ""
 }
