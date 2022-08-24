@@ -1,36 +1,21 @@
 const db = require("../config/db");
 
-function addUser(id, username) {
+async function addUser(id, username) {
   const sql = "INSERT INTO users (id, username) VALUES ($1, $2)";
-  return db.query(sql, [id, username], function (error) {
-    if (error) {
-      console.error(error.message);
-      reject(error);
-    }
-    return;
-  });
+  const result = await db.query(sql, [id, username]);
+  return result.rows;
 }
 
-function getUsers() {
+async function getUsers() {
   const sql = "SELECT * FROM users";
-  return db.query(sql, function (error, rows) {
-    if (error) {
-      console.error(error.message);
-      reject(error);
-    }
-    return rows;
-  });
+  const result = await db.query(sql);
+  return result.rows;
 }
 
-function getOneUser(id, username) {
+async function getOneUser(id, username) {
   const sql = "SELECT * FROM users WHERE id = $ AND username = $1";
-  return db.query(sql, [id, username], function (error, rows) {
-    if (error) {
-      console.error(error.message);
-      reject(error);
-    }
-    return rows;
-  });
+  const result = await db.query(sql, [id, username]);
+  return rows;
 }
 
 module.exports = {

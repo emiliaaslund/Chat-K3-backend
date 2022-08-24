@@ -35,10 +35,10 @@ CREATE TABLE IF NOT EXISTS messages
 (
     id SERIAL PRIMARY KEY,
     message TEXT NOT NULL,
-    id_room INTEGER,
+    id_room TEXT,
     id_user TEXT,
     username TEXT,
-    date INTEGER,
+    date TEXT,
     CONSTRAINT fk_id_room FOREIGN KEY(id_room) REFERENCES rooms(id) ON DELETE CASCADE,
     CONSTRAINT fk_id_user FOREIGN KEY(id_user) REFERENCES users(id) ON DELETE CASCADE
 )
