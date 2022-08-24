@@ -1,18 +1,20 @@
 const db = require("../config/db");
 
-function addMessage({ message, id_room, id_user, username, date }) {
+async function addMessage({ message, id_room, id_user, username, date }) {
   const sql = `INSERT INTO messages (message, id_room, id_user, username, date) VALUES ($1, $2, $3, $4, $5)`;
-  return db.query(
-    sql,
-    [message, id_room, id_user, username, date],
-    function (error) {
-      if (error) {
-        console.error(error.message);
-        reject(error);
-      }
-      return;
-    }
-  );
+  const result = await db.query(sql, [
+    message,
+    id_room,
+    id_user,
+    username,
+    date,
+  ]);
+  // function (error) {
+  //   if (error) {
+  //     console.error(error.message);
+  //     reject(error);
+  //   }
+  return result.rows;
 }
 
 function getRoomMessages(id_room) {
