@@ -20,9 +20,9 @@ const io = new Server(server, {
     origin: "*",
     origin: [
       "*",
-      "https://localhost:3000/",
-      "http://127.0.0.1:5173/",
-      "https://realtimechat-client.herokuapp.com/",
+      // "https://localhost:3000/",
+      // "http://127.0.0.1:5173/",
+      // "https://realtimechat-client.herokuapp.com/",
     ],
     methods: ["GET", "POST", "OPTIONS"],
     credentials: true,
