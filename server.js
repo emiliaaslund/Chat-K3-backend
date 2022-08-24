@@ -13,6 +13,7 @@ const roomsModel = require("./models/rooms.model");
 const messagesModel = require("./models/messages.model");
 
 // får No 'Access-Control-Allow-Origin' och ERR_FAILED_503 när jag joinar ett rum.
+// NEJ NU FÅR JAG ERROR 200 och fortfarande CORS fel gaahahhh.
 
 const io = new Server(server, {
   cors: {
