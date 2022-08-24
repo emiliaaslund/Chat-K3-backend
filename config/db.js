@@ -4,7 +4,9 @@ const db = new Client({
   ssl: {
     rejectUnauthorized: false,
   },
-  connectionString: process.env.DATABASE_URL,
+  connectionString:
+    // process.env.DATABASE_URL,
+    "postgres://qlulqjdihsvtuo:89f465ca448221ff472a7a867140204ed9e510858deef65424e5f95e87807518@ec2-52-49-120-150.eu-west-1.compute.amazonaws.com:5432/dfmb0o13bt0vg6",
 });
 
 // ansluter till databasen
