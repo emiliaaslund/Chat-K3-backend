@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const port = process.env.PORT;
+const port = process.env.PORT || 5000;
 const http = require("http");
 const { Server } = require("socket.io");
 const server = http.createServer(app);
@@ -20,7 +20,7 @@ const io = new Server(server, {
     origin: "*",
     origin: [
       "*",
-      "https://localhost:5000/",
+      "https://localhost:3000/",
       "http://127.0.0.1:5173/",
       "https://realtimechat-client.herokuapp.com/",
     ],

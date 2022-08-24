@@ -4,9 +4,8 @@ const db = new Client({
   ssl: {
     rejectUnauthorized: false,
   },
-  connectionString:
-    // process.env.DATABASE_URL,
-    "postgres://qlulqjdihsvtuo:89f465ca448221ff472a7a867140204ed9e510858deef65424e5f95e87807518@ec2-52-49-120-150.eu-west-1.compute.amazonaws.com:5432/dfmb0o13bt0vg6",
+  connectionString: process.env.DATABASE_URL,
+  // "postgres://qlulqjdihsvtuo:89f465ca448221ff472a7a867140204ed9e510858deef65424e5f95e87807518@ec2-52-49-120-150.eu-west-1.compute.amazonaws.com:5432/dfmb0o13bt0vg6",
 });
 
 // ansluter till databasen
@@ -33,12 +32,10 @@ CREATE TABLE IF NOT EXISTS messages
 (
     id SERIAL PRIMARY KEY,
     message TEXT NOT NULL,
-    id_room INTEGER,
-    id_user INTEGER,
-    username INTEGER,
-    date TEXT,
-    CONSTRAINT fk_id_room FOREIGN KEY(id_room) REFERENCES rooms(id) ON DELETE CASCADE,
-    CONSTRAINT fk_id_user FOREIGN KEY(id_user) REFERENCES users(id) ON DELETE CASCADE
+    id_room TEXT,
+    id_user TEXT,
+    username TEXT,
+    date TEXT
 )
 `;
 
