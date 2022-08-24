@@ -12,25 +12,19 @@ const usersModel = require("./models/users.model");
 const roomsModel = require("./models/rooms.model");
 const messagesModel = require("./models/messages.model");
 
+// får No 'Access-Control-Allow-Origin' och ERR_FAILED_503 när jag joinar ett rum.
+
 const io = new Server(server, {
   cors: {
-    origin: "*",
-    methods: ["GET", "POST"],
-    credentials: true,
+    origin: [
+      "*",
+      "http://127.0.0.1:5173/",
+      "https://realtimechat-client.herokuapp.com/",
+    ],
+    methods: ["GET", "POST", "OPTIONS"],
+    headers: "Content-Type",
   },
 });
-
-//   cors: {
-//     origin: [
-//       "*",
-//       "localhost:3000",
-//       "https://realtimechat-client.herokuapp.com/",
-//     ],
-//     methods: ["GET", "POST", "OPTIONS"],
-//     credentials: true,
-//     headers: "Content-Type",
-//   },
-// });
 
 // socket connection / anslutning.
 io.on("connection", async (socket) => {
@@ -76,6 +70,7 @@ io.on("connection", async (socket) => {
   // gå med i rum
   socket.on("join_room", async (room) => {
     socket.join(room);
+    console.log(`${socket.id} has joined ${room}`);
     socket.emit("joined_room", room);
     const messages = await messagesModel.getRoomMessages(room);
     // io.to(room).emit("joined_room", room, username);
@@ -127,7 +122,7 @@ io.on("connection", async (socket) => {
         message: data.message,
         username: data.username,
       });
-      // console.log(newMessage, "denna skickar med all data");
+      console.log(newMessage, "denna skickar med all data");
     }
   });
 

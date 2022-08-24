@@ -9,7 +9,7 @@ async function addMessage({ message, id_room, id_user, username, date }) {
     username,
     date,
   ]);
-  return result.rows;
+  return result.rows[0];
 }
 
 async function getRoomMessages(id_room) {

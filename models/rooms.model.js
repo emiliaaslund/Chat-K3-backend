@@ -3,7 +3,7 @@ const db = require("../config/db");
 async function addRoom(room) {
   const sql = "INSERT INTO rooms (name) VALUES ($1)";
   const result = await db.query(sql, [room]);
-  return result.rows;
+  return result.rows[0];
 }
 
 async function getRooms() {
@@ -16,13 +16,13 @@ async function getRooms() {
 function getOneRoom(room) {
   const sql = "SELECT * FROM rooms WHERE name = $1";
   const result = db.query(sql, [room]);
-  return result.rows;
+  return result.rows[0];
 }
 
 function deleteRoom(room) {
   const sql = `DELETE FROM rooms WHERE name = $1`;
   const result = db.query(sql, [room]);
-  return result.rows;
+  return result.rows[0];
 }
 
 module.exports = {
