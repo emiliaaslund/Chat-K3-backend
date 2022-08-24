@@ -14,16 +14,23 @@ const messagesModel = require("./models/messages.model");
 
 const io = new Server(server, {
   cors: {
-    origin: [
-      "*",
-      "localhost:3000",
-      "https://realtimechat-client.herokuapp.com/",
-    ],
-    methods: ["GET", "POST", "OPTIONS"],
+    origin: "*",
+    methods: ["GET", "POST"],
     credentials: true,
-    headers: "Content-Type",
   },
 });
+
+//   cors: {
+//     origin: [
+//       "*",
+//       "localhost:3000",
+//       "https://realtimechat-client.herokuapp.com/",
+//     ],
+//     methods: ["GET", "POST", "OPTIONS"],
+//     credentials: true,
+//     headers: "Content-Type",
+//   },
+// });
 
 // socket connection / anslutning.
 io.on("connection", async (socket) => {
